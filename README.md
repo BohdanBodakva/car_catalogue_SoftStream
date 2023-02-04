@@ -2,6 +2,8 @@
 
 ## Backend: Java 17, Spring Boot 3, MySQL, Hibernate.
 
+### Frontend: https://github.com/BohdanBodakva/car_catalogue_SoftStream_frontend
+
 Write a web application "Car catalog".
 The main requirements for the project:
 The car must have the following characteristics: make, model, color, engine volume, price, description (optional field).
