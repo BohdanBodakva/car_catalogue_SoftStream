@@ -10,6 +10,7 @@ import eu.softstream.car_catalogue.exceptions.CarNotFoundException;
 import eu.softstream.car_catalogue.repositories.BrandRepository;
 import eu.softstream.car_catalogue.repositories.CarPriceRepository;
 import eu.softstream.car_catalogue.repositories.CarRepository;
+import eu.softstream.car_catalogue.services.CarPriceService;
 import eu.softstream.car_catalogue.services.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,13 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
+    private final CarPriceService carPriceService;
     private final CarRepository carRepository;
     private final BrandRepository brandRepository;
     private final CarPriceRepository carPriceRepository;
@@ -114,7 +114,14 @@ public class CarServiceImpl implements CarService {
 
         if(car.getCurrentPrice() != carToUpdate.getCurrentPrice()) {
             carToUpdate.setCurrentPrice(car.getCurrentPrice());
-            carPriceRepository.save(new CarPriceEntity(carToUpdate, LocalDate.now().plusDays(1), car.getCurrentPrice()));
+
+            Set<CarPriceEntity> carPricesToUpdate = carPriceService.getAllCarPricesByCarId((carToUpdate.getId()));
+            for(CarPriceEntity carPrice: carPricesToUpdate){
+                carPrice.setDate(carPrice.getDate().minusDays(1));
+                carPriceRepository.save(carPrice);
+            }
+
+            carPriceRepository.save(new CarPriceEntity(carToUpdate, LocalDate.now(), car.getCurrentPrice()));
         }
 
         return carRepository.save(carToUpdate);
@@ -128,6 +135,11 @@ public class CarServiceImpl implements CarService {
         car.getBrand().removeCar(car);
 
         carRepository.deleteById(carId);
+    }
+
+    @Override
+    public List<String> getAllColors() {
+        return Arrays.stream(CarColor.values()).map(Enum::name).collect(Collectors.toList());
     }
 
     // ==================================================================

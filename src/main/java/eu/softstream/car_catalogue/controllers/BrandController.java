@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/brands")
 @RequiredArgsConstructor
 public class BrandController {

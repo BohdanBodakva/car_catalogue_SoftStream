@@ -18,6 +18,7 @@ public interface CarService {
     CarEntity createCar(CarEntity car) throws BrandNotFoundException;
     CarEntity updateCarById(int carId, CarEntity car) throws CarNotFoundException, BrandNotFoundException;
     void deleteCarById(int carId) throws CarNotFoundException;
+    List<String> getAllColors();
 
 
 

@@ -19,7 +19,7 @@ public class CarDTO {
     private String color;
     private int engineCapacity;
     private int currentPrice;
-    private int brand;
+    private SimpleBrandDto brand;
     private String description;
     private Set<Map<LocalDate, Integer>> prices;
 
@@ -30,7 +30,7 @@ public class CarDTO {
                 carEntity.getColor().name(),
                 carEntity.getEngineCapacityInLiters(),
                 carEntity.getCurrentPrice(),
-                carEntity.getBrand().getId(),
+                SimpleBrandDto.fromSimpleBrandEntity(carEntity.getBrand()),
                 carEntity.getDescription(),
                 carEntity.getPrices().stream().map(
                         price -> Map.of(price.getDate(), price.getPrice())

@@ -26,6 +26,11 @@ public class BrandEntity {
     @Column(name = "name", unique = true)
     private String name;
 
+    public BrandEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @OneToMany(mappedBy = "brand")
     private Set<CarEntity> cars = new HashSet<>();
 
